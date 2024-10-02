@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+      - name: config-server-container
+        image: tapiwanashembizvo/config-server:10
+        ports:
+        - containerPort: 8888
+        env:
+        - name:  DB_URL
+          valueFrom:
+            secretKeyRef:
+              name:  postgres-db-secret
+              key:  DB_URL
+        
+
+        - name:  DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name:  postgres-db-secret
+              key: DB_PASS
+
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-db-secret
+              key: DB_USER
+        resources:
+          requests:
+            memory: "50Mi" #memory is messured in Mi and Gi 
+            cpu: "150m" #1000m  = 1 cpu core 
+          
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+      
+    
