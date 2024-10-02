@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: nice-app-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: nice-app
   ports:
     - protocol: TCP
       port: 8778
       targetPort: 8778
-      nodePort: 30904
+  
