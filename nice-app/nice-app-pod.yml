@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nice-app
+  labels:
+    app: nice-app
+spec:
+  containers:
+    - name: nice-app
+      image: tapiwanashembizvo/nice-app-img:1.0
+      ports:
+        - containerPort: 8778
