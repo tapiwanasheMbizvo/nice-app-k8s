@@ -18,6 +18,10 @@ data:
         server pet-backend-service:8785; 
       }
 
+      upstream pet_consumer{
+        server pet-consumer-service:8789;
+      }
+
       server {
         listen 80;
 
@@ -47,6 +51,16 @@ data:
           proxy_set_header X-Forwarded-Proto $scheme;
         }
 
+        
+        location /api/consumer/pets {
+          proxy_pass http://pet_consumer;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+
         location /api/v1/pets {
           proxy_pass http://pet_backend;
           proxy_set_header Host $host;
@@ -55,6 +69,7 @@ data:
           proxy_set_header X-Forwarded-Proto $scheme;
         }
 
+     
         location / {
           proxy_pass http://backend;
           proxy_set_header Host $host;
